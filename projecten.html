@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projecten – Erabo Klusbedrijf Nijmegen</title>
+  <meta name="description" content="Voorbeelden van projecten van Erabo in regio Nijmegen. Upload nieuwe foto's direct vanaf mobiel (beveiligd met pincode)." />
+  <link rel="icon" href="./assets/logo.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>:root{ --brand:#9DB83A; }</style>
+</head>
+<body class="text-slate-800">
+  <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-10">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+      <a href="./index.html" class="flex items-center gap-3">
+        <img src="./assets/logo.png" alt="Erabo logo" class="h-9 w-auto" onerror="this.style.display='none'" />
+        <span class="font-semibold">Erabo</span>
+      </a>
+      <nav class="ml-auto flex gap-6 text-sm">
+        <a class="hover:text-[var(--brand)]" href="./index.html">Home</a>
+        <a class="hover:text-[var(--brand)]" href="./diensten.html">Diensten</a>
+        <a class="text-[var(--brand)]" href="./projecten.html">Projecten</a>
+        <a class="hover:text-[var(--brand)]" href="./contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-10">
+    <h1 class="text-3xl font-semibold">Projecten</h1>
+    <p class="mt-2 text-slate-700">Een selectie van recent werk. Nieuwe foto's kunnen hieronder direct vanaf mobiel geüpload worden.</p>
+
+    <section class="mt-8 p-4 border rounded-lg bg-white">
+      <h2 class="font-medium">Foto's uploaden (alleen voor Erik)</h2>
+      <p class="text-sm text-slate-600 mt-1">Beveiligd met pincode. Kies "camera" of "bestanden" op mobiel.</p>
+      <form id="uploadForm" class="mt-4 grid gap-3 md:grid-cols-[1fr_auto_auto] items-end">
+        <div>
+          <label class="block text-sm">Pincode</label>
+          <input id="pin" type="password" class="mt-1 w-full border rounded-md px-3 py-2" placeholder="****" inputmode="numeric" />
+        </div>
+        <div>
+          <label class="block text-sm">Afbeeldingen</label>
+          <input id="fileInput" type="file" accept="image/*" capture="environment" multiple class="mt-1" />
+        </div>
+        <button type="submit" class="px-4 py-2 rounded-md text-white" style="background:var(--brand)">Uploaden</button>
+      </form>
+      <p id="uploadMsg" class="mt-3 text-sm"></p>
+    </section>
+
+    <section class="mt-10">
+      <h2 class="text-xl font-semibold">Galerij</h2>
+      <p class="text-sm text-slate-600">Nieuw geüploade foto's verschijnen hier direct (lokaal). Voor een centrale galerij kunnen we later een kleine backend of Cloudinary-lijst toevoegen.</p>
+      <div id="gallery" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
+    </section>
+  </main>
+
+  <footer class="mt-16 border-t">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-sm">© Erabo – Nijmegen</div>
+  </footer>
+
+  <script>
+    // Config placeholders – vul aan in README instructies of vervang hieronder
+    const CLOUD_NAME = 'VUL_JE_CLOUDINARY_CLOUD_NAME_IN';
+    const UPLOAD_PRESET = 'VUL_JE_UNSIGNED_UPLOAD_PRESET_IN';
+    const PIN_CODE = '1234'; // wijzig deze! Alleen client-side bescherming.
+
+    const uploadForm = document.getElementById('uploadForm');
+    const fileInput = document.getElementById('fileInput');
+    const msg = document.getElementById('uploadMsg');
+    const gallery = document.getElementById('gallery');
+
+    // Toon lokale recent geüploade items (uit localStorage)
+    const KEY = 'erabo_recent_uploads';
+    function loadLocalGallery() {
+      gallery.innerHTML = '';
+      const items = JSON.parse(localStorage.getItem(KEY) || '[]');
+      for (const url of items) {
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = 'Projectfoto';
+        img.loading = 'lazy';
+        img.className = 'w-full h-40 object-cover rounded-md border';
+        gallery.appendChild(img);
+      }
+    }
+    loadLocalGallery();
+
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msg.textContent = '';
+      if (document.getElementById('pin').value !== PIN_CODE) {
+        msg.textContent = 'Onjuiste pincode.';
+        msg.className = 'mt-3 text-sm text-red-600';
+        return;
+      }
+      const files = fileInput.files;
+      if (!files || !files.length) {
+        msg.textContent = 'Kies minimaal één afbeelding.';
+        msg.className = 'mt-3 text-sm text-red-600';
+        return;
+      }
+      const uploadedUrls = [];
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+        // Optioneel: folder/tag
+        formData.append('folder', 'erabo');
+        formData.append('context', 'caption=Erabo project|alt=Erabo klus');
+        try {
+          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: formData });
+          if (!res.ok) throw new Error('Upload mislukt');
+          const data = await res.json();
+          uploadedUrls.push(data.secure_url);
+        } catch (err) {
+          console.error(err);
+          msg.textContent = 'Een of meer uploads zijn mislukt.';
+          msg.className = 'mt-3 text-sm text-red-600';
+        }
+      }
+      if (uploadedUrls.length) {
+        // Bewaar en toon lokaal
+        const existing = JSON.parse(localStorage.getItem(KEY) || '[]');
+        const all = [...uploadedUrls, ...existing].slice(0, 60);
+        localStorage.setItem(KEY, JSON.stringify(all));
+        loadLocalGallery();
+        msg.textContent = 'Upload gelukt!';
+        msg.className = 'mt-3 text-sm text-green-700';
+        fileInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
