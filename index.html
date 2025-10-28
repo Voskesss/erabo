@@ -1,92 +1,333 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Erabo – Klusbedrijf in Nijmegen | Electra, Loodgieterswerk, Verbouwingen</title>
-  <meta name="description" content="Erabo is een vakkundig klusbedrijf in Nijmegen. Netjes, sociaal en ervaren in electra, loodgieterswerk, verbouwingen, wanden en meer. Vraag een vrijblijvende offerte aan." />
-  <meta property="og:title" content="Erabo – Klusbedrijf in Nijmegen" />
-  <meta property="og:description" content="Vakkundig, netjes en sociaal. Electra, loodgieterswerk, verbouwingen, wanden en meer." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://voskesss.github.io/erabo/" />
-  <link rel="icon" href="./assets/logo.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{ --brand:#9DB83A; --text:#4A4A4A; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erabo - Klusbedrijf in Nijmegen | Electra, Loodgieterswerk, Verbouwingen</title>
+    <meta name="description" content="Erabo is een vakkundig klusbedrijf in Nijmegen. Netjes, sociaal en ervaren in electra, loodgieterswerk, verbouwingen, wanden en meer. Vraag een vrijblijvende offerte aan.">
+    <meta name="keywords" content="klusbedrijf Nijmegen, elektricien Nijmegen, loodgieter Nijmegen, verbouwing Nijmegen, elektra installatie, sanitair">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Erabo - Klusbedrijf in Nijmegen">
+    <meta property="og:description" content="Vakkundig, netjes en sociaal. Electra, loodgieterswerk, verbouwingen, wanden en meer.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://voskesss.github.io/erabo/">
+    <meta property="og:image" content="assets/logo-wide.png">
+
+    <link rel="icon" href="assets/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --brand: #9DB83A;
+            --text: #4A4A4A;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #9DB83A 0%, #7A9430 100%);
+        }
+
+        .service-card {
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9DB83A, #7A9430);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(157, 184, 58, 0.3);
+        }
+    </style>
 </head>
-<body class="text-slate-800">
-  <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-10">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-      <img src="./assets/logo.png" alt="Erabo logo" class="h-10 w-auto" onerror="this.style.display='none'" />
-      <nav class="ml-auto flex gap-6 text-sm">
-        <a class="hover:text-[var(--brand)]" href="./index.html">Home</a>
-        <a class="hover:text-[var(--brand)]" href="./diensten.html">Diensten</a>
-        <a class="hover:text-[var(--brand)]" href="./projecten.html">Projecten</a>
-        <a class="hover:text-[var(--brand)]" href="./contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="assets/logo.png" alt="Erabo" class="h-10 w-auto">
+                <span class="font-bold text-xl text-gray-800">Erabo</span>
+            </a>
+            <nav class="ml-auto flex gap-6 text-sm">
+                <a href="index.html" class="text-[var(--brand)] font-semibold">Home</a>
+                <a href="diensten.html" class="hover:text-[var(--brand)] transition-colors">Diensten</a>
+                <a href="projecten.html" class="hover:text-[var(--brand)] transition-colors">Projecten</a>
+                <a href="contact.html" class="hover:text-[var(--brand)] transition-colors">Contact</a>
+            </nav>
+        </div>
+    </header>
 
-  <main>
-    <section class="relative overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-[var(--brand)]/10 via-transparent to-[var(--brand)]/10"></div>
-      <div class="max-w-6xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-10 relative">
-        <div>
-          <h1 class="text-4xl md:text-5xl font-semibold text-slate-900">Erabo – Klusbedrijf Nijmegen</h1>
-          <p class="mt-4 text-lg text-slate-700">Vakkundig, netjes en sociaal. Ruime ervaring in <strong>electra</strong>, <strong>loodgieterswerk</strong>, <strong>verbouwingen</strong>, <strong>wanden & plafonds</strong> en meer.</p>
-          <div class="mt-6 flex gap-3">
-            <a href="./contact.html" class="inline-flex items-center px-5 py-3 rounded-md text-white" style="background:var(--brand)">Vrijblijvende offerte</a>
-            <a href="./projecten.html" class="inline-flex items-center px-5 py-3 rounded-md border">Bekijk projecten</a>
-          </div>
-          <ul class="mt-6 grid sm:grid-cols-2 gap-3 text-sm">
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full" style="background:var(--brand)"></span>Regio Nijmegen</li>
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full" style="background:var(--brand)"></span>Netjes gewerkt, goede communicatie</li>
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full" style="background:var(--brand)"></span>Heldere afspraken, eerlijk advies</li>
-            <li class="flex items-start gap-2"><span class="mt-1 h-2 w-2 rounded-full" style="background:var(--brand)"></span>Veel ervaring, vakkundig</li>
-          </ul>
+    <!-- Hero Section -->
+    <section class="hero-gradient text-white py-20 md:py-28">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                        Erabo<br>
+                        <span class="text-3xl md:text-4xl font-normal">Klusbedrijf Nijmegen</span>
+                    </h1>
+                    <p class="text-xl mb-8 text-white/90">
+                        Vakkundig, netjes en sociaal. Ruime ervaring in <strong>electra</strong>, <strong>loodgieterswerk</strong>, <strong>verbouwingen</strong>, <strong>wanden & plafonds</strong> en meer.
+                    </p>
+                    <div class="flex flex-wrap gap-4 mb-8">
+                        <a href="contact.html" class="cta-button inline-flex items-center px-8 py-4 rounded-lg bg-white text-[var(--brand)] font-semibold text-lg">
+                            Vrijblijvende Offerte
+                        </a>
+                        <a href="projecten.html" class="inline-flex items-center px-8 py-4 rounded-lg border-2 border-white text-white font-semibold text-lg hover:bg-white/10 transition-colors">
+                            Bekijk Projecten
+                        </a>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                            <span>Regio Nijmegen</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                            <span>Netjes gewerkt</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                            <span>Heldere afspraken</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                            <span>Veel ervaring</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center">
+                    <img src="assets/logo-wide.png" alt="Erabo" class="w-full max-w-md drop-shadow-2xl">
+                </div>
+            </div>
         </div>
-        <div class="flex items-center justify-center">
-          <img src="./assets/logo-wide.png" alt="Erabo breed logo" class="w-full max-w-md" onerror="this.src='./assets/logo.png'" />
-        </div>
-      </div>
     </section>
 
-    <section class="max-w-6xl mx-auto px-4 py-12">
-      <h2 class="text-2xl font-semibold">Diensten</h2>
-      <div class="mt-6 grid md:grid-cols-3 gap-6">
-        <div class="p-5 border rounded-lg bg-white">
-          <h3 class="font-medium">Electra</h3>
-          <p class="text-sm text-slate-600 mt-2">Aanleg en uitbreiding groepen, verlichting, schakelmateriaal, storingen.</p>
+    <!-- Why Choose Us -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Waarom Erabo?</h2>
+                <p class="text-gray-600 text-lg">Uw betrouwbare partner voor alle klussen</p>
+            </div>
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="feature-icon mx-auto mb-4">✓</div>
+                    <h3 class="font-bold text-lg mb-2">Ervaren</h3>
+                    <p class="text-gray-600 text-sm">Jarenlange ervaring in diverse vakgebieden</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon mx-auto mb-4">★</div>
+                    <h3 class="font-bold text-lg mb-2">Kwaliteit</h3>
+                    <p class="text-gray-600 text-sm">Vakkundig werk met oog voor detail</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon mx-auto mb-4">⚡</div>
+                    <h3 class="font-bold text-lg mb-2">Snel</h3>
+                    <p class="text-gray-600 text-sm">Snelle reactietijd en efficiënt werken</p>
+                </div>
+                <div class="text-center">
+                    <div class="feature-icon mx-auto mb-4">♥</div>
+                    <h3 class="font-bold text-lg mb-2">Sociaal</h3>
+                    <p class="text-gray-600 text-sm">Netjes, vriendelijk en betrouwbaar</p>
+                </div>
+            </div>
         </div>
-        <div class="p-5 border rounded-lg bg-white">
-          <h3 class="font-medium">Loodgieterswerk</h3>
-          <p class="text-sm text-slate-600 mt-2">Sanitair, lekkages, vervangen kranen/afvoeren, kleine installaties.</p>
-        </div>
-        <div class="p-5 border rounded-lg bg-white">
-          <h3 class="font-medium">Verbouwingen & Afbouw</h3>
-          <p class="text-sm text-slate-600 mt-2">Wanden & plafonds, timmerwerk, keukens, kleine renovaties.</p>
-        </div>
-      </div>
-      <div class="mt-8">
-        <a href="./diensten.html" class="inline-flex items-center px-5 py-3 rounded-md border">Alle diensten</a>
-      </div>
     </section>
-  </main>
 
-  <footer class="mt-16 border-t">
-    <div class="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 text-sm">
-      <div>
-        <strong>Erabo</strong><br/>
-        Meijhorst 6210, 6537 LP Nijmegen<br/>
-        KvK: 67879128 · Btw: NL001876446B50<br/>
-        IBAN: NL59 INGB 0007 620 539
-      </div>
-      <div>
-        Tel: <a class="text-slate-700 hover:underline" href="tel:+31628973845">06 2897 3845</a><br/>
-        E-mail: <a class="text-slate-700 hover:underline" href="mailto:boomerik@hotmail.com">boomerik@hotmail.com</a>
-      </div>
-    </div>
-  </footer>
+    <!-- Services -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Onze Diensten</h2>
+                <p class="text-gray-600 text-lg">Van kleine reparaties tot complete renovaties</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Electra -->
+                <div class="service-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&h=400&fit=crop"
+                             alt="Elektra"
+                             class="w-full h-full object-cover"
+                             onerror="this.parentElement.innerHTML='<div class=\'text-white text-6xl\'>⚡</div>'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Electra</h3>
+                        <ul class="space-y-2 text-gray-600 text-sm mb-4">
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Aanleg en uitbreiding groepen
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Verlichting installatie
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Schakelmateriaal
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Storing opsporen en oplossen
+                            </li>
+                        </ul>
+                        <a href="diensten.html#electra" class="text-[var(--brand)] font-semibold hover:underline">
+                            Meer info →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sanitair -->
+                <div class="service-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-cyan-500 to-cyan-700 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&h=400&fit=crop"
+                             alt="Sanitair"
+                             class="w-full h-full object-cover"
+                             onerror="this.parentElement.innerHTML='<div class=\'text-white text-6xl\'>🔧</div>'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Loodgieterswerk & Sanitair</h3>
+                        <ul class="space-y-2 text-gray-600 text-sm mb-4">
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Badkamer installaties
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Lekkages verhelpen
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Kranen en afvoeren vervangen
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                CV-installaties
+                            </li>
+                        </ul>
+                        <a href="diensten.html#sanitair" class="text-[var(--brand)] font-semibold hover:underline">
+                            Meer info →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Renovatie -->
+                <div class="service-card bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=600&h=400&fit=crop"
+                             alt="Renovatie"
+                             class="w-full h-full object-cover"
+                             onerror="this.parentElement.innerHTML='<div class=\'text-white text-6xl\'>🏠</div>'">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-3 text-gray-800">Verbouwingen & Afbouw</h3>
+                        <ul class="space-y-2 text-gray-600 text-sm mb-4">
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Wanden & plafonds
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Timmerwerk
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Keuken plaatsen
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-[var(--brand)] mt-1">•</span>
+                                Kleine renovaties
+                            </li>
+                        </ul>
+                        <a href="diensten.html#renovatie" class="text-[var(--brand)] font-semibold hover:underline">
+                            Meer info →
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-10">
+                <a href="diensten.html" class="inline-flex items-center px-8 py-3 rounded-lg border-2 border-[var(--brand)] text-[var(--brand)] font-semibold hover:bg-[var(--brand)] hover:text-white transition-colors">
+                    Bekijk Alle Diensten
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Klaar voor uw project?</h2>
+            <p class="text-gray-600 text-lg mb-8">
+                Neem vandaag nog contact met ons op voor een vrijblijvende offerte
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="tel:+31628973845" class="inline-flex items-center px-8 py-4 rounded-lg bg-[var(--brand)] text-white font-semibold text-lg hover:bg-[#8DA030] transition-colors">
+                    📞 06 2897 3845
+                </a>
+                <a href="contact.html" class="inline-flex items-center px-8 py-4 rounded-lg border-2 border-[var(--brand)] text-[var(--brand)] font-semibold text-lg hover:bg-[var(--brand)] hover:text-white transition-colors">
+                    Contact Formulier
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <img src="assets/logo.png" alt="Erabo" class="h-12 mb-4 brightness-0 invert">
+                    <p class="text-gray-300 text-sm">
+                        Uw betrouwbare klusbedrijf in Nijmegen en omgeving
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Bedrijfsgegevens</h3>
+                    <div class="text-gray-300 text-sm space-y-1">
+                        <p>Erabo</p>
+                        <p>Meijhorst 6210</p>
+                        <p>6537 LP Nijmegen</p>
+                        <p class="mt-2">KvK: 67879128</p>
+                        <p>Btw: NL001876446B50</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Contact</h3>
+                    <div class="text-gray-300 text-sm space-y-2">
+                        <p>
+                            Tel: <a href="tel:+31628973845" class="hover:text-[var(--brand)]">06 2897 3845</a>
+                        </p>
+                        <p>
+                            Email: <a href="mailto:boomerik@hotmail.com" class="hover:text-[var(--brand)]">boomerik@hotmail.com</a>
+                        </p>
+                        <p class="mt-2">IBAN: NL59 INGB 0007 620 539</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 Erabo - Alle rechten voorbehouden</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

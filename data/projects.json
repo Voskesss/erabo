@@ -1,0 +1,74 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "Complete Badkamer Renovatie",
+      "description": "Luxe badkamerrenovatie met moderne afwerking, inclusief tegelwerk, sanitair en verlichting.",
+      "category": "Sanitair",
+      "images": [
+        "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800",
+        "https://images.unsplash.com/photo-1620626011761-996317b8d101?w=800"
+      ],
+      "date": "2025-01-15",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "title": "Elektra Installatie Nieuwbouw",
+      "description": "Volledige elektrische installatie voor nieuwbouwwoning, inclusief domotica en slimme verlichting.",
+      "category": "Electra",
+      "images": [
+        "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800",
+        "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800"
+      ],
+      "date": "2025-01-10",
+      "featured": true
+    },
+    {
+      "id": "3",
+      "title": "Keuken Renovatie",
+      "description": "Complete keukenrenovatie met nieuwe leidingen, electra en afwerking.",
+      "category": "Renovatie",
+      "images": [
+        "https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=800",
+        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800"
+      ],
+      "date": "2024-12-20",
+      "featured": false
+    },
+    {
+      "id": "4",
+      "title": "Centrale Verwarming Installatie",
+      "description": "Installatie van moderne HR-ketel met volledige CV-systeem en radiatoren.",
+      "category": "Sanitair",
+      "images": [
+        "https://images.unsplash.com/photo-1607400201889-565b1ee75f8e?w=800"
+      ],
+      "date": "2024-12-05",
+      "featured": false
+    },
+    {
+      "id": "5",
+      "title": "Zonnepanelen Installatie",
+      "description": "Plaatsing van 12 zonnepanelen inclusief omvormer en monitoring systeem.",
+      "category": "Electra",
+      "images": [
+        "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800",
+        "https://images.unsplash.com/photo-1595437193398-f24279553f4f?w=800"
+      ],
+      "date": "2024-11-28",
+      "featured": true
+    },
+    {
+      "id": "6",
+      "title": "Woonkamer Renovatie",
+      "description": "Volledige renovatie met nieuwe electra, verlichting en afwerking.",
+      "category": "Renovatie",
+      "images": [
+        "https://images.unsplash.com/photo-1600210492493-0946911123ea?w=800"
+      ],
+      "date": "2024-11-15",
+      "featured": false
+    }
+  ]
+}
