@@ -84,12 +84,12 @@
     <div id="adminDashboard" class="hidden">
         <!-- Header -->
         <header class="bg-white shadow-md">
-            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center space-x-4">
-                    <img src="assets/logo.png" alt="Erabo" class="h-10">
+                    <img src="assets/logo.png" alt="Erabo" class="h-12">
                     <h1 class="text-xl font-bold text-gray-800">Project Beheer</h1>
                 </div>
-                <div class="flex space-x-2">
+                <div class="flex flex-wrap gap-2">
                     <button onclick="exportData()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm">
                         Export Data
                     </button>
