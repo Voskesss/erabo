@@ -56,24 +56,70 @@
             transform: scale(1.05);
             box-shadow: 0 10px 20px rgba(157, 184, 58, 0.3);
         }
+
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-button {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-40">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="assets/logo.png" alt="Erabo" class="h-10 w-auto">
-                <span class="font-bold text-xl text-gray-800">Erabo</span>
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="index.html">
+                <img src="assets/logo.png" alt="Erabo" class="h-12 w-auto">
             </a>
-            <nav class="ml-auto flex gap-6 text-sm">
+
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav flex gap-6 text-sm">
                 <a href="index.html" class="text-[var(--brand)] font-semibold">Home</a>
                 <a href="diensten.html" class="hover:text-[var(--brand)] transition-colors">Diensten</a>
                 <a href="projecten.html" class="hover:text-[var(--brand)] transition-colors">Projecten</a>
                 <a href="contact.html" class="hover:text-[var(--brand)] transition-colors">Contact</a>
             </nav>
+
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMobileMenu()" class="mobile-menu-button text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="mobile-menu bg-white border-t">
+            <nav class="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-4">
+                <a href="index.html" class="text-[var(--brand)] font-semibold py-2">Home</a>
+                <a href="diensten.html" class="hover:text-[var(--brand)] transition-colors py-2">Diensten</a>
+                <a href="projecten.html" class="hover:text-[var(--brand)] transition-colors py-2">Projecten</a>
+                <a href="contact.html" class="hover:text-[var(--brand)] transition-colors py-2">Contact</a>
+            </nav>
         </div>
     </header>
+
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
 
     <!-- Hero Section -->
     <section class="hero-gradient text-white py-20 md:py-28">
