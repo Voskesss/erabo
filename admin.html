@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Erabo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-preview {
+            position: relative;
+            display: inline-block;
+        }
+        .image-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .image-preview button {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Login Screen -->
+    <div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+            <div class="text-center mb-6">
+                <img src="assets/logo.png" alt="Erabo Logo" class="h-16 mx-auto mb-4">
+                <h1 class="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
+                <p class="text-gray-600 mt-2">Voer uw wachtwoord in om toegang te krijgen</p>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Wachtwoord</label>
+                    <input
+                        type="password"
+                        id="password"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9DB83A] focus:border-transparent"
+                        placeholder="Voer wachtwoord in"
+                        required
+                    >
+                </div>
+                <button
+                    type="submit"
+                    class="w-full bg-[#9DB83A] text-white py-2 rounded-lg hover:bg-[#8DA030] transition-colors"
+                >
+                    Inloggen
+                </button>
+                <p id="loginError" class="text-red-500 text-sm text-center hidden">Onjuist wachtwoord</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <img src="assets/logo.png" alt="Erabo" class="h-10">
+                    <h1 class="text-xl font-bold text-gray-800">Project Beheer</h1>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="exportData()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                        Export Data
+                    </button>
+                    <button onclick="importData()" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors text-sm">
+                        Import Data
+                    </button>
+                    <button onclick="logout()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors text-sm">
+                        Uitloggen
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-600 text-sm">Totaal Projecten</h3>
+                    <p id="totalProjects" class="text-3xl font-bold text-[#9DB83A]">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-600 text-sm">Electra</h3>
+                    <p id="electraCount" class="text-3xl font-bold text-blue-500">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-600 text-sm">Sanitair</h3>
+                    <p id="sanitairCount" class="text-3xl font-bold text-cyan-500">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-gray-600 text-sm">Renovatie</h3>
+                    <p id="renovatieCount" class="text-3xl font-bold text-orange-500">0</p>
+                </div>
+            </div>
+
+            <!-- Add Project Button -->
+            <div class="mb-6">
+                <button onclick="openProjectModal()" class="bg-[#9DB83A] text-white px-6 py-3 rounded-lg hover:bg-[#8DA030] transition-colors">
+                    + Nieuw Project Toevoegen
+                </button>
+            </div>
+
+            <!-- Projects List -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Projecten</h2>
+                    <div id="projectsList" class="space-y-4">
+                        <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="modalTitle" class="text-2xl font-bold text-gray-800">Nieuw Project</h2>
+                    <button onclick="closeProjectModal()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <form id="projectForm" class="space-y-4">
+                    <input type="hidden" id="projectId">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Titel *</label>
+                        <input
+                            type="text"
+                            id="projectTitle"
+                            required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9DB83A] focus:border-transparent"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Beschrijving *</label>
+                        <textarea
+                            id="projectDescription"
+                            rows="4"
+                            required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9DB83A] focus:border-transparent"
+                        ></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Categorie *</label>
+                        <select
+                            id="projectCategory"
+                            required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9DB83A] focus:border-transparent"
+                        >
+                            <option value="">Selecteer categorie</option>
+                            <option value="Electra">Electra</option>
+                            <option value="Sanitair">Sanitair</option>
+                            <option value="Renovatie">Renovatie</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Datum</label>
+                        <input
+                            type="date"
+                            id="projectDate"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9DB83A] focus:border-transparent"
+                        >
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            <input type="checkbox" id="projectFeatured" class="mr-2">
+                            Uitgelicht project
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Afbeeldingen</label>
+                        <div class="space-y-2">
+                            <input
+                                type="url"
+                                id="imageUrl"
+                                placeholder="Voer afbeelding URL in (bijv. Unsplash link)"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9DB83A] focus:border-transparent"
+                            >
+                            <button
+                                type="button"
+                                onclick="addImageUrl()"
+                                class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+                            >
+                                Voeg Afbeelding Toe
+                            </button>
+                        </div>
+                        <div id="imagePreviewContainer" class="mt-4 flex flex-wrap gap-4">
+                            <!-- Image previews will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4 pt-4">
+                        <button
+                            type="submit"
+                            class="flex-1 bg-[#9DB83A] text-white py-2 rounded-lg hover:bg-[#8DA030] transition-colors"
+                        >
+                            Opslaan
+                        </button>
+                        <button
+                            type="button"
+                            onclick="closeProjectModal()"
+                            class="flex-1 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                        >
+                            Annuleren
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+
+    <script>
+        // Configuration
+        const ADMIN_PASSWORD = 'erabo2025'; // Change this password!
+        const STORAGE_KEY = 'erabo_projects';
+        let currentProject = null;
+        let projectImages = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if already logged in
+            if (sessionStorage.getItem('admin_logged_in') === 'true') {
+                showDashboard();
+            }
+
+            // Login form handler
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const password = document.getElementById('password').value;
+                if (password === ADMIN_PASSWORD) {
+                    sessionStorage.setItem('admin_logged_in', 'true');
+                    showDashboard();
+                } else {
+                    document.getElementById('loginError').classList.remove('hidden');
+                }
+            });
+
+            // Project form handler
+            document.getElementById('projectForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                saveProject();
+            });
+
+            // Import file handler
+            document.getElementById('importFile').addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            if (data.projects && Array.isArray(data.projects)) {
+                                localStorage.setItem(STORAGE_KEY, JSON.stringify(data.projects));
+                                loadProjects();
+                                alert('Data succesvol geïmporteerd!');
+                            } else {
+                                alert('Ongeldig bestandsformaat');
+                            }
+                        } catch (error) {
+                            alert('Fout bij het lezen van bestand: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            // Load initial data from projects.json if localStorage is empty
+            if (!localStorage.getItem(STORAGE_KEY)) {
+                fetch('data/projects.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.projects) {
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(data.projects));
+                        }
+                    })
+                    .catch(error => console.error('Error loading initial data:', error));
+            }
+        });
+
+        function showDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            loadProjects();
+        }
+
+        function logout() {
+            sessionStorage.removeItem('admin_logged_in');
+            document.getElementById('loginScreen').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('password').value = '';
+        }
+
+        function loadProjects() {
+            const projects = getProjects();
+            updateStats(projects);
+            renderProjects(projects);
+        }
+
+        function getProjects() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveProjects(projects) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+        }
+
+        function updateStats(projects) {
+            document.getElementById('totalProjects').textContent = projects.length;
+            document.getElementById('electraCount').textContent = projects.filter(p => p.category === 'Electra').length;
+            document.getElementById('sanitairCount').textContent = projects.filter(p => p.category === 'Sanitair').length;
+            document.getElementById('renovatieCount').textContent = projects.filter(p => p.category === 'Renovatie').length;
+        }
+
+        function renderProjects(projects) {
+            const container = document.getElementById('projectsList');
+            if (projects.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Nog geen projecten toegevoegd</p>';
+                return;
+            }
+
+            container.innerHTML = projects.map(project => `
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <h3 class="text-lg font-bold text-gray-800">${project.title}</h3>
+                                ${project.featured ? '<span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Uitgelicht</span>' : ''}
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">${project.description}</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                <span class="bg-gray-100 px-2 py-1 rounded">${project.category}</span>
+                                <span>${project.date || 'Geen datum'}</span>
+                                <span>${project.images?.length || 0} foto's</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <button
+                                onclick="editProject('${project.id}')"
+                                class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors text-sm"
+                            >
+                                Bewerken
+                            </button>
+                            <button
+                                onclick="deleteProject('${project.id}')"
+                                class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors text-sm"
+                            >
+                                Verwijderen
+                            </button>
+                        </div>
+                    </div>
+                    ${project.images && project.images.length > 0 ? `
+                        <div class="mt-4 flex gap-2 overflow-x-auto">
+                            ${project.images.slice(0, 4).map(img => `
+                                <img src="${img}" alt="" class="h-20 w-20 object-cover rounded">
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function openProjectModal(projectId = null) {
+            currentProject = projectId;
+            projectImages = [];
+
+            if (projectId) {
+                const projects = getProjects();
+                const project = projects.find(p => p.id === projectId);
+                if (project) {
+                    document.getElementById('modalTitle').textContent = 'Project Bewerken';
+                    document.getElementById('projectId').value = project.id;
+                    document.getElementById('projectTitle').value = project.title;
+                    document.getElementById('projectDescription').value = project.description;
+                    document.getElementById('projectCategory').value = project.category;
+                    document.getElementById('projectDate').value = project.date || '';
+                    document.getElementById('projectFeatured').checked = project.featured || false;
+                    projectImages = project.images || [];
+                    updateImagePreviews();
+                }
+            } else {
+                document.getElementById('modalTitle').textContent = 'Nieuw Project';
+                document.getElementById('projectForm').reset();
+                document.getElementById('projectId').value = '';
+                updateImagePreviews();
+            }
+
+            document.getElementById('projectModal').classList.add('active');
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').classList.remove('active');
+            currentProject = null;
+            projectImages = [];
+        }
+
+        function addImageUrl() {
+            const urlInput = document.getElementById('imageUrl');
+            const url = urlInput.value.trim();
+
+            if (url) {
+                projectImages.push(url);
+                urlInput.value = '';
+                updateImagePreviews();
+            }
+        }
+
+        function removeImage(index) {
+            projectImages.splice(index, 1);
+            updateImagePreviews();
+        }
+
+        function updateImagePreviews() {
+            const container = document.getElementById('imagePreviewContainer');
+            container.innerHTML = projectImages.map((img, index) => `
+                <div class="image-preview">
+                    <img src="${img}" alt="Preview">
+                    <button type="button" onclick="removeImage(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function saveProject() {
+            const projects = getProjects();
+            const projectId = document.getElementById('projectId').value || Date.now().toString();
+
+            const projectData = {
+                id: projectId,
+                title: document.getElementById('projectTitle').value,
+                description: document.getElementById('projectDescription').value,
+                category: document.getElementById('projectCategory').value,
+                date: document.getElementById('projectDate').value || new Date().toISOString().split('T')[0],
+                featured: document.getElementById('projectFeatured').checked,
+                images: projectImages
+            };
+
+            const existingIndex = projects.findIndex(p => p.id === projectId);
+            if (existingIndex >= 0) {
+                projects[existingIndex] = projectData;
+            } else {
+                projects.unshift(projectData);
+            }
+
+            saveProjects(projects);
+            loadProjects();
+            closeProjectModal();
+        }
+
+        function editProject(projectId) {
+            openProjectModal(projectId);
+        }
+
+        function deleteProject(projectId) {
+            if (confirm('Weet u zeker dat u dit project wilt verwijderen?')) {
+                const projects = getProjects();
+                const filtered = projects.filter(p => p.id !== projectId);
+                saveProjects(filtered);
+                loadProjects();
+            }
+        }
+
+        function exportData() {
+            const projects = getProjects();
+            const data = {
+                projects: projects
+            };
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'projects.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            document.getElementById('importFile').click();
+        }
+    </script>
+</body>
+</html>

@@ -1,133 +1,334 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projecten – Erabo Klusbedrijf Nijmegen</title>
-  <meta name="description" content="Voorbeelden van projecten van Erabo in regio Nijmegen. Upload nieuwe foto's direct vanaf mobiel (beveiligd met pincode)." />
-  <link rel="icon" href="./assets/logo.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>:root{ --brand:#9DB83A; }</style>
-</head>
-<body class="text-slate-800">
-  <header class="border-b bg-white/80 backdrop-blur sticky top-0 z-10">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
-      <a href="./index.html" class="flex items-center gap-3">
-        <img src="./assets/logo.png" alt="Erabo logo" class="h-9 w-auto" onerror="this.style.display='none'" />
-        <span class="font-semibold">Erabo</span>
-      </a>
-      <nav class="ml-auto flex gap-6 text-sm">
-        <a class="hover:text-[var(--brand)]" href="./index.html">Home</a>
-        <a class="hover:text-[var(--brand)]" href="./diensten.html">Diensten</a>
-        <a class="text-[var(--brand)]" href="./projecten.html">Projecten</a>
-        <a class="hover:text-[var(--brand)]" href="./contact.html">Contact</a>
-      </nav>
-    </div>
-  </header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onze Projecten - Erabo Klusbedrijf Nijmegen</title>
+    <meta name="description" content="Bekijk onze uitgevoerde projecten in Nijmegen en omgeving. Van elektrische installaties tot sanitair en complete renovaties. Kwaliteit en vakmanschap gegarandeerd.">
+    <meta name="keywords" content="projecten, portfolio, elektricien Nijmegen, loodgieter Nijmegen, renovatie Nijmegen, klussen Nijmegen">
+    <link rel="icon" href="assets/logo.png">
 
-  <main class="max-w-6xl mx-auto px-4 py-10">
-    <h1 class="text-3xl font-semibold">Projecten</h1>
-    <p class="mt-2 text-slate-700">Een selectie van recent werk. Nieuwe foto's kunnen hieronder direct vanaf mobiel geüpload worden.</p>
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Onze Projecten - Erabo Klusbedrijf">
+    <meta property="og:description" content="Bekijk onze uitgevoerde projecten in Nijmegen en omgeving">
+    <meta property="og:image" content="assets/logo-wide.png">
+    <meta property="og:type" content="website">
 
-    <section class="mt-8 p-4 border rounded-lg bg-white">
-      <h2 class="font-medium">Foto's uploaden (alleen voor Erik)</h2>
-      <p class="text-sm text-slate-600 mt-1">Beveiligd met pincode. Kies "camera" of "bestanden" op mobiel.</p>
-      <form id="uploadForm" class="mt-4 grid gap-3 md:grid-cols-[1fr_auto_auto] items-end">
-        <div>
-          <label class="block text-sm">Pincode</label>
-          <input id="pin" type="password" class="mt-1 w-full border rounded-md px-3 py-2" placeholder="****" inputmode="numeric" />
-        </div>
-        <div>
-          <label class="block text-sm">Afbeeldingen</label>
-          <input id="fileInput" type="file" accept="image/*" capture="environment" multiple class="mt-1" />
-        </div>
-        <button type="submit" class="px-4 py-2 rounded-md text-white" style="background:var(--brand)">Uploaden</button>
-      </form>
-      <p id="uploadMsg" class="mt-3 text-sm"></p>
-    </section>
-
-    <section class="mt-10">
-      <h2 class="text-xl font-semibold">Galerij</h2>
-      <p class="text-sm text-slate-600">Nieuw geüploade foto's verschijnen hier direct (lokaal). Voor een centrale galerij kunnen we later een kleine backend of Cloudinary-lijst toevoegen.</p>
-      <div id="gallery" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
-    </section>
-  </main>
-
-  <footer class="mt-16 border-t">
-    <div class="max-w-6xl mx-auto px-4 py-8 text-sm">© Erabo – Nijmegen</div>
-  </footer>
-
-  <script>
-    // Config placeholders – vul aan in README instructies of vervang hieronder
-    const CLOUD_NAME = 'VUL_JE_CLOUDINARY_CLOUD_NAME_IN';
-    const UPLOAD_PRESET = 'VUL_JE_UNSIGNED_UPLOAD_PRESET_IN';
-    const PIN_CODE = '1234'; // wijzig deze! Alleen client-side bescherming.
-
-    const uploadForm = document.getElementById('uploadForm');
-    const fileInput = document.getElementById('fileInput');
-    const msg = document.getElementById('uploadMsg');
-    const gallery = document.getElementById('gallery');
-
-    // Toon lokale recent geüploade items (uit localStorage)
-    const KEY = 'erabo_recent_uploads';
-    function loadLocalGallery() {
-      gallery.innerHTML = '';
-      const items = JSON.parse(localStorage.getItem(KEY) || '[]');
-      for (const url of items) {
-        const img = document.createElement('img');
-        img.src = url;
-        img.alt = 'Projectfoto';
-        img.loading = 'lazy';
-        img.className = 'w-full h-40 object-cover rounded-md border';
-        gallery.appendChild(img);
-      }
-    }
-    loadLocalGallery();
-
-    uploadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      msg.textContent = '';
-      if (document.getElementById('pin').value !== PIN_CODE) {
-        msg.textContent = 'Onjuiste pincode.';
-        msg.className = 'mt-3 text-sm text-red-600';
-        return;
-      }
-      const files = fileInput.files;
-      if (!files || !files.length) {
-        msg.textContent = 'Kies minimaal één afbeelding.';
-        msg.className = 'mt-3 text-sm text-red-600';
-        return;
-      }
-      const uploadedUrls = [];
-      for (const file of files) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', UPLOAD_PRESET);
-        // Optioneel: folder/tag
-        formData.append('folder', 'erabo');
-        formData.append('context', 'caption=Erabo project|alt=Erabo klus');
-        try {
-          const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: formData });
-          if (!res.ok) throw new Error('Upload mislukt');
-          const data = await res.json();
-          uploadedUrls.push(data.secure_url);
-        } catch (err) {
-          console.error(err);
-          msg.textContent = 'Een of meer uploads zijn mislukt.';
-          msg.className = 'mt-3 text-sm text-red-600';
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --brand: #9DB83A;
         }
-      }
-      if (uploadedUrls.length) {
-        // Bewaar en toon lokaal
-        const existing = JSON.parse(localStorage.getItem(KEY) || '[]');
-        const all = [...uploadedUrls, ...existing].slice(0, 60);
-        localStorage.setItem(KEY, JSON.stringify(all));
-        loadLocalGallery();
-        msg.textContent = 'Upload gelukt!';
-        msg.className = 'mt-3 text-sm text-green-700';
-        fileInput.value = '';
-      }
-    });
-  </script>
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background-color: var(--brand);
+            color: white;
+        }
+
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .badge-featured {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
+
+        .category-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .category-Electra {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .category-Sanitair {
+            background-color: #CFFAFE;
+            color: #0E7490;
+        }
+
+        .category-Renovatie {
+            background-color: #FED7AA;
+            color: #C2410C;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center gap-4">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="assets/logo.png" alt="Erabo" class="h-10 w-auto">
+                <span class="font-bold text-xl text-gray-800">Erabo</span>
+            </a>
+            <nav class="ml-auto flex gap-6 text-sm">
+                <a href="index.html" class="hover:text-[var(--brand)] transition-colors">Home</a>
+                <a href="diensten.html" class="hover:text-[var(--brand)] transition-colors">Diensten</a>
+                <a href="projecten.html" class="text-[var(--brand)] font-semibold">Projecten</a>
+                <a href="contact.html" class="hover:text-[var(--brand)] transition-colors">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-br from-[#9DB83A] to-[#7A9430] text-white py-16">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Onze Projecten</h1>
+            <p class="text-xl opacity-90">Ontdek onze uitgevoerde projecten en kwaliteit</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <!-- Filter Buttons -->
+        <div class="mb-8 flex flex-wrap gap-3 justify-center">
+            <button onclick="filterProjects('all')" class="filter-btn active px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-[var(--brand)] hover:text-white font-medium">
+                Alle Projecten
+            </button>
+            <button onclick="filterProjects('Electra')" class="filter-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-[var(--brand)] hover:text-white font-medium">
+                Electra
+            </button>
+            <button onclick="filterProjects('Sanitair')" class="filter-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-[var(--brand)] hover:text-white font-medium">
+                Sanitair
+            </button>
+            <button onclick="filterProjects('Renovatie')" class="filter-btn px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-[var(--brand)] hover:text-white font-medium">
+                Renovatie
+            </button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- Projects will be loaded here -->
+        </div>
+
+        <!-- No Projects Message -->
+        <div id="noProjects" class="hidden text-center py-12">
+            <p class="text-gray-500 text-lg">Geen projecten gevonden in deze categorie.</p>
+        </div>
+
+        <!-- CTA Section -->
+        <section class="mt-16 bg-white rounded-lg shadow-lg p-8 text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Wilt u ook zo'n mooi resultaat?</h2>
+            <p class="text-gray-600 mb-6">Neem contact met ons op voor een vrijblijvende offerte</p>
+            <a href="contact.html" class="inline-block bg-[var(--brand)] text-white px-8 py-3 rounded-lg hover:bg-[#8DA030] transition-colors font-semibold">
+                Vraag Offerte Aan
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="max-w-6xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <img src="assets/logo.png" alt="Erabo" class="h-12 mb-4 brightness-0 invert">
+                    <p class="text-gray-300">Uw betrouwbare klusbedrijf in Nijmegen en omgeving</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Contactgegevens</h3>
+                    <p class="text-gray-300">Erik Bosch</p>
+                    <p class="text-gray-300">Telefoon: <a href="tel:+31612345678" class="hover:text-[var(--brand)]">06-12345678</a></p>
+                    <p class="text-gray-300">Email: <a href="mailto:info@erabo.nl" class="hover:text-[var(--brand)]">info@erabo.nl</a></p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4">Diensten</h3>
+                    <ul class="text-gray-300 space-y-2">
+                        <li><a href="diensten.html#electra" class="hover:text-[var(--brand)]">Elektrische installaties</a></li>
+                        <li><a href="diensten.html#sanitair" class="hover:text-[var(--brand)]">Sanitair & Loodgieterswerk</a></li>
+                        <li><a href="diensten.html#renovatie" class="hover:text-[var(--brand)]">Renovaties</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Erabo - Alle rechten voorbehouden</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span onclick="closeModal()" class="absolute top-4 right-8 text-white text-4xl font-bold cursor-pointer hover:text-gray-300">&times;</span>
+        <img id="modalImage" class="modal-content rounded-lg">
+    </div>
+
+    <script>
+        let allProjects = [];
+        let currentFilter = 'all';
+
+        // Load projects from JSON and localStorage
+        async function loadProjects() {
+            try {
+                // Try to load from localStorage first (admin updates)
+                const localProjects = localStorage.getItem('erabo_projects');
+                if (localProjects) {
+                    allProjects = JSON.parse(localProjects);
+                } else {
+                    // Fallback to JSON file
+                    const response = await fetch('data/projects.json');
+                    const data = await response.json();
+                    allProjects = data.projects || [];
+                }
+
+                renderProjects();
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                document.getElementById('noProjects').classList.remove('hidden');
+            }
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const noProjectsMsg = document.getElementById('noProjects');
+
+            // Filter projects
+            let filteredProjects = currentFilter === 'all'
+                ? allProjects
+                : allProjects.filter(p => p.category === currentFilter);
+
+            // Sort by featured and date
+            filteredProjects.sort((a, b) => {
+                if (a.featured && !b.featured) return -1;
+                if (!a.featured && b.featured) return 1;
+                return new Date(b.date) - new Date(a.date);
+            });
+
+            if (filteredProjects.length === 0) {
+                grid.innerHTML = '';
+                noProjectsMsg.classList.remove('hidden');
+                return;
+            }
+
+            noProjectsMsg.classList.add('hidden');
+
+            grid.innerHTML = filteredProjects.map(project => {
+                const mainImage = project.images && project.images.length > 0
+                    ? project.images[0]
+                    : 'https://via.placeholder.com/400x300?text=Geen+afbeelding';
+
+                const dateFormatted = project.date
+                    ? new Date(project.date).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long' })
+                    : '';
+
+                return `
+                    <div class="project-card bg-white rounded-lg shadow-md overflow-hidden" data-category="${project.category}">
+                        <div class="relative">
+                            <img
+                                src="${mainImage}"
+                                alt="${project.title}"
+                                class="w-full h-48 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                                onclick="openModal('${mainImage}')"
+                                onerror="this.src='https://via.placeholder.com/400x300?text=Afbeelding+niet+beschikbaar'"
+                            >
+                            ${project.featured ? '<div class="absolute top-2 right-2 badge-featured text-white px-3 py-1 rounded-full text-xs font-bold">★ Uitgelicht</div>' : ''}
+                        </div>
+                        <div class="p-5">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="category-badge category-${project.category}">${project.category}</span>
+                                ${dateFormatted ? `<span class="text-xs text-gray-500">${dateFormatted}</span>` : ''}
+                            </div>
+                            <h3 class="text-lg font-bold text-gray-800 mb-2">${project.title}</h3>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3">${project.description}</p>
+                            ${project.images && project.images.length > 1 ? `
+                                <div class="flex gap-2 mt-4">
+                                    ${project.images.slice(0, 4).map((img, idx) => `
+                                        <img
+                                            src="${img}"
+                                            alt="${project.title} ${idx + 1}"
+                                            class="w-16 h-16 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                                            onclick="openModal('${img}')"
+                                            onerror="this.style.display='none'"
+                                        >
+                                    `).join('')}
+                                    ${project.images.length > 4 ? `<div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600">+${project.images.length - 4}</div>` : ''}
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterProjects(category) {
+            currentFilter = category;
+
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            renderProjects();
+        }
+
+        function openModal(imageUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('active');
+            modalImg.src = imageUrl;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').classList.remove('active');
+        }
+
+        // Close modal on click outside image
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize
+        loadProjects();
+
+        // Reload projects when localStorage changes (for admin sync)
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'erabo_projects') {
+                loadProjects();
+            }
+        });
+    </script>
 </body>
 </html>
