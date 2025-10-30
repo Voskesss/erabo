@@ -1,0 +1,17 @@
+{
+  "name": "erabo-facebook-sync",
+  "version": "1.0.0",
+  "description": "Sync Facebook posts to Erabo projects",
+  "main": "scripts/facebook-sync.js",
+  "scripts": {
+    "sync": "node scripts/facebook-sync.js",
+    "test": "node scripts/facebook-sync.js"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {},
+  "keywords": ["facebook", "sync", "projects"],
+  "author": "Erabo",
+  "license": "MIT"
+}
